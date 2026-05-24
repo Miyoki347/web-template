@@ -99,7 +99,6 @@ gh api user --jq .login
 ## 第2章　テンプレートのセットアップ（初回のみ）
 
 > この章は一生に1回だけやります。完了したら次回からは第3章へ。
-> Miyoki347 はすでに完了済みのためスキップしてください。
 
 ### 2-1　作業フォルダを作る
 
@@ -179,11 +178,11 @@ cd C:\dev\hp-builder-test
 
 ```powershell
 # XXX をクライアント名に変える（例: tanaka-clinic）
-gh repo create miyoki-client-XXX `
+gh repo create client-XXX `
   --template Miyoki347/hp-builder-template `
   --private --clone
 
-cd miyoki-client-XXX
+cd client-XXX
 npm install
 ```
 
