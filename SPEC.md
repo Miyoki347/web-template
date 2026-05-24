@@ -444,4 +444,3 @@ DAY 5  Lighthouseスコア確認 → マニュアル送付 → 納品
 ---
 
 最終更新: 2026年5月
-作成: Miyoki（Miyoki347）
