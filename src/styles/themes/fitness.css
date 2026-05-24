@@ -1,0 +1,35 @@
+:root {
+  /* Colors */
+  --brand-primary:    #FF4500;
+  --brand-secondary:  #FF8C00;
+  --brand-accent:     #FF4500;
+  --brand-bg:         #0F0F1A;
+  --brand-surface:    #1A1A2E;
+  --brand-border:     rgba(255, 69, 0, 0.25);
+  --brand-text:       #F0F0FF;
+  --brand-text-muted: #8888AA;
+  --brand-glow:       rgba(255, 69, 0, 0.4);
+
+  /* Gradient */
+  --brand-gradient:     linear-gradient(135deg, #FF4500 0%, #FF8C00 100%);
+  --brand-gradient-btn: linear-gradient(135deg, #FF4500, #CC3700);
+
+  /* Typography */
+  --font-heading: 'Noto Sans JP', sans-serif;
+  --font-body:    'Noto Sans JP', sans-serif;
+
+  /* Shape */
+  --radius-brand: 4px;
+  --radius-card:  8px;
+
+  /* Motion */
+  --anim-speed: 0.35s;
+  --anim-ease:  cubic-bezier(0.4, 0, 0.6, 1);
+
+  /* Depth */
+  --shadow-card:  0 8px 32px rgba(255, 69, 0, 0.2);
+  --shadow-hero:  0 24px 80px rgba(255, 69, 0, 0.3);
+  --glass-bg:     rgba(26, 26, 46, 0.85);
+  --glass-border: rgba(255, 69, 0, 0.3);
+  --glass-blur:   16px;
+}

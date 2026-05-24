@@ -137,12 +137,14 @@ New-Item -ItemType Directory -Force `
   .github\workflows
 ```
 
-### 2-4　業種別テーマCSSを作成する
+### 2-4　業種別テーマCSSを確認する
 
-保育園・幼稚園（nursery.css）、クリニック・医療（medical.css）、
-飲食・カフェ（restaurant.css）、企業・法人（corporate.css）の
-4ファイルを `src\styles\themes\` に作成します。
-詳細はリポジトリ内のファイルを参照してください。
+以下の4ファイルがテンプレートにすでに含まれています。追加の作業は不要です。
+
+- `src\styles\themes\nursery.css`（保育園・幼稚園）
+- `src\styles\themes\medical.css`（クリニック・医療）
+- `src\styles\themes\restaurant.css`（飲食・カフェ）
+- `src\styles\themes\corporate.css`（企業・法人・個人）
 
 ### 2-5　GitHubにpushしてTemplate設定をONにする
 
@@ -168,10 +170,10 @@ gh api repos/(ユーザー名)/hp-builder-template --jq .is_template
 
 > 所要時間：15〜20分
 
-### 3-1　案件フォルダに移動する
+### 3-1　作業フォルダに移動する
 
 ```powershell
-cd C:\dev\hp-builder-test
+cd C:\dev\hp-builder
 ```
 
 ### 3-2　テンプレートから複製する
@@ -179,7 +181,7 @@ cd C:\dev\hp-builder-test
 ```powershell
 # XXX をクライアント名に変える（例: tanaka-clinic）
 gh repo create client-XXX `
-  --template Miyoki347/hp-builder-template `
+  --template (ユーザー名)/hp-builder-template `
   --private --clone
 
 cd client-XXX
@@ -194,20 +196,67 @@ npm install
 # 保育園・幼稚園
 Copy-Item src\styles\themes\nursery.css src\styles\themes\active.css
 
-# クリニック・医療
-Copy-Item src\styles\themes\medical.css src\styles\themes\active.css
+# 一般クリニック
+Copy-Item src\styles\themes\medical-clinic.css src\styles\themes\active.css
 
-# 飲食・カフェ
-Copy-Item src\styles\themes\restaurant.css src\styles\themes\active.css
+# 歯科
+Copy-Item src\styles\themes\medical-dental.css src\styles\themes\active.css
 
-# 企業・法人・個人
+# 美容クリニック
+Copy-Item src\styles\themes\medical-beauty.css src\styles\themes\active.css
+
+# 整体・接骨院・マッサージ
+Copy-Item src\styles\themes\medical-wellness.css src\styles\themes\active.css
+
+# 定食屋・大衆食堂
+Copy-Item src\styles\themes\food-casual.css src\styles\themes\active.css
+
+# カフェ・ベーカリー
+Copy-Item src\styles\themes\food-cafe.css src\styles\themes\active.css
+
+# バー・居酒屋・ダイニングバー
+Copy-Item src\styles\themes\food-bar.css src\styles\themes\active.css
+
+# 高級レストラン・割烹
+Copy-Item src\styles\themes\food-fine.css src\styles\themes\active.css
+
+# 一般建設・土木・工務店
+Copy-Item src\styles\themes\construction.css src\styles\themes\active.css
+
+# リフォーム・内装
+Copy-Item src\styles\themes\renovation.css src\styles\themes\active.css
+
+# 不動産
+Copy-Item src\styles\themes\realestate.css src\styles\themes\active.css
+
+# 美容室・ヘアサロン
+Copy-Item src\styles\themes\salon-hair.css src\styles\themes\active.css
+
+# ネイル・エステ
+Copy-Item src\styles\themes\salon-nail.css src\styles\themes\active.css
+
+# 学習塾・予備校
+Copy-Item src\styles\themes\school-juku.css src\styles\themes\active.css
+
+# 英会話・語学スクール
+Copy-Item src\styles\themes\school-language.css src\styles\themes\active.css
+
+# ジム・フィットネス
+Copy-Item src\styles\themes\fitness.css src\styles\themes\active.css
+
+# 企業・法人
 Copy-Item src\styles\themes\corporate.css src\styles\themes\active.css
+
+# ITスタートアップ・Web企業
+Copy-Item src\styles\themes\startup.css src\styles\themes\active.css
+
+# 士業・コンサル・会計・法律
+Copy-Item src\styles\themes\professional.css src\styles\themes\active.css
 ```
 
 ### 3-4　環境変数を設定する
 
 ```powershell
-Copy-Item .env.local.example .env.local
 notepad .env.local
 ```
 
@@ -243,7 +292,7 @@ notepad CLAUDE.md
 新しいPowerShellウィンドウを開いて実行してください。
 
 ```powershell
-cd C:\dev\hp-builder-test\miyoki-client-XXX
+cd C:\dev\hp-builder\client-XXX
 npm run dev
 ```
 
@@ -296,7 +345,7 @@ vercel
 3. `Link to existing project?` → `n`（新規）
 4. `Project name?` → そのままEnter
 
-プレビューURL（`https://miyoki-client-xxx.vercel.app`）が発行されます。
+プレビューURL（`https://client-xxx.vercel.app`）が発行されます。
 クライアントに共有して最終確認をしてもらってください。
 
 ### 4-3　Vercelの環境変数を設定する
@@ -354,13 +403,14 @@ Chromeでサイトを開く → F12 → Lighthouseタブ → 「Analyze page loa
 ### 5-1　エラーログの確認
 
 ```powershell
+# your-domain.com を実際のドメインに変えてください
 vercel logs https://your-domain.com --follow
 ```
 
 ### 5-2　パッケージの脆弱性チェック
 
 ```powershell
-cd C:\dev\hp-builder-test\miyoki-client-XXX
+cd C:\dev\hp-builder\client-XXX
 npm audit
 ```
 
@@ -385,7 +435,7 @@ freeeで月額保守料の請求書を発行してください。
 
 | エラー | 原因 | 対処 |
 |--------|------|------|
-| `Could not clone: repository is empty` | Template設定がOFF | `gh api -X PATCH repos/Miyoki347/hp-builder-template -f is_template=true` を実行 |
+| `Could not clone: repository is empty` | Template設定がOFF | `gh api -X PATCH repos/(ユーザー名)/hp-builder-template -f is_template=true` を実行 |
 | `PathNotFound` でcdができない | フォルダが存在しない | `gh repo create --clone` を先に実行するとフォルダが自動作成される |
 | `npm run build` でエラー | 環境変数が未設定 | `.env.local` の MICROCMS の2つが記入されているか確認 |
 | サイトが更新されない | Webhookが動いていない | VercelとmicroCMSの REVALIDATE_SECRET が同じ値か確認 |
@@ -397,10 +447,32 @@ freeeで月額保守料の請求書を発行してください。
 
 | 業種 | テーマファイル | メインカラー | 雰囲気 |
 |------|--------------|-------------|--------|
-| 保育園・幼稚園 | nursery.css | #FF8C42（オレンジ） | 温かみ・丸み |
-| クリニック・医療 | medical.css | #2B6CB0（青） | 清潔・信頼 |
-| 飲食・カフェ | restaurant.css | #744210（ブラウン） | 高級・ダーク |
-| 企業・法人・個人 | corporate.css | #1A202C（ネイビー） | シンプル・誠実 |
+| **教育・子ども** | | | |
+| 保育園・幼稚園 | nursery.css | #FF8C42（オレンジ） | 温かみ・丸み・賑やか |
+| 学習塾・予備校 | school-juku.css | #1E3A5F（ネイビー） | 真剣・集中・信頼 |
+| 英会話・語学スクール | school-language.css | #0078D7（ブルー） | 国際的・明るい・親しみ |
+| **医療・健康** | | | |
+| 一般クリニック | medical-clinic.css | #2B6CB0（ブルー） | 清潔・安心・信頼 |
+| 歯科 | medical-dental.css | #00A3C4（シアン） | 清潔・フレッシュ・明るい |
+| 美容クリニック | medical-beauty.css | #B7791F（ゴールド） | 高級・上品・フェミニン |
+| 整体・接骨院・マッサージ | medical-wellness.css | #5C7A5A（セージ） | ナチュラル・癒し・落ち着き |
+| **飲食・カフェ** | | | |
+| 定食屋・大衆食堂 | food-casual.css | #E8540F（オレンジレッド） | 元気・庶民的・温かい |
+| カフェ・ベーカリー | food-cafe.css | #6B4226（エスプレッソ） | ナチュラル・職人・こだわり |
+| バー・居酒屋・ダイニングバー | food-bar.css | #00D4AA（ネオンティール） | ダーク・洗練・夜 |
+| 高級レストラン・割烹 | food-fine.css | #C9A84C（ゴールド） | 格式・贅沢・黒ベース |
+| **建設・不動産** | | | |
+| 一般建設・土木・工務店 | construction.css | #1C2B3A（スチール） | 力強い・重厚・信頼 |
+| リフォーム・内装 | renovation.css | #8B5E3C（ウッド） | 温かみ・丁寧・職人 |
+| 不動産 | realestate.css | #1A3A5C（ディープネイビー） | 都市的・プレミアム・信頼 |
+| **美容・ライフスタイル** | | | |
+| 美容室・ヘアサロン | salon-hair.css | #2C2C2C（ブラック） | スタイリッシュ・モード・上質 |
+| ネイル・エステ | salon-nail.css | #C47BA0（ダスティピンク） | フェミニン・上品・やさしい |
+| ジム・フィットネス | fitness.css | #FF4500（エレクトリック） | ダーク・情熱・ダイナミック |
+| **ビジネス・法人** | | | |
+| 企業・法人 | corporate.css | #1A202C（ネイビー） | シンプル・誠実・プロ |
+| ITスタートアップ・Web企業 | startup.css | #6C63FF（パープル） | ダーク・先端・革新 |
+| 士業・コンサル・会計・法律 | professional.css | #2D2D2D（チャコール） | 格式・ブロンズ・権威 |
 
 ---
 

@@ -1,10 +1,35 @@
-﻿:root {
-  --brand-primary:   #FF8C42;
-  --brand-secondary: #4ECDC4;
-  --brand-accent:    #FFE66D;
-  --brand-bg:        #FFFBF0;
-  --font-heading:    'Rounded Mplus 1c', sans-serif;
-  --font-body:       'Noto Sans JP', sans-serif;
-  --anim-speed:      0.6s;
-  --radius-brand:    24px;
+:root {
+  /* Colors */
+  --brand-primary:    #FF8C42;
+  --brand-secondary:  #4ECDC4;
+  --brand-accent:     #FFE66D;
+  --brand-bg:         #FFFBF0;
+  --brand-surface:    #FFFFFF;
+  --brand-border:     rgba(255, 140, 66, 0.2);
+  --brand-text:       #3D2B1F;
+  --brand-text-muted: #8B6355;
+  --brand-glow:       rgba(255, 140, 66, 0.35);
+
+  /* Gradient */
+  --brand-gradient:     linear-gradient(135deg, #FF8C42 0%, #FFE66D 50%, #4ECDC4 100%);
+  --brand-gradient-btn: linear-gradient(135deg, #FF8C42, #FF6B1A);
+
+  /* Typography */
+  --font-heading: 'M PLUS Rounded 1c', 'Rounded Mplus 1c', sans-serif;
+  --font-body:    'Noto Sans JP', sans-serif;
+
+  /* Shape */
+  --radius-brand: 24px;
+  --radius-card:  16px;
+
+  /* Motion */
+  --anim-speed: 0.6s;
+  --anim-ease:  cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Depth */
+  --shadow-card:  0 8px 32px rgba(255, 140, 66, 0.15);
+  --shadow-hero:  0 24px 80px rgba(255, 140, 66, 0.25);
+  --glass-bg:     rgba(255, 251, 240, 0.85);
+  --glass-border: rgba(255, 140, 66, 0.25);
+  --glass-blur:   12px;
 }
