@@ -1,0 +1,10 @@
+﻿:root {
+  --brand-primary:   #1A202C;
+  --brand-secondary: #3182CE;
+  --brand-accent:    #EDF2F7;
+  --brand-bg:        #FFFFFF;
+  --font-heading:    'Noto Sans JP', sans-serif;
+  --font-body:       'Noto Sans JP', sans-serif;
+  --anim-speed:      0.4s;
+  --radius-brand:    4px;
+}
