@@ -300,7 +300,29 @@ npm run dev
 
 ### 3-7　Claude Codeで実装を開始する
 
-元のPowerShellウィンドウで実行してください。
+> ⚠️ **起動前に必ず現在地を確認してください**
+>
+> Claude Code は起動したフォルダにファイルを作成します。  
+> 間違ったフォルダで起動すると、Next.js の構成と無関係な場所にファイルが作られます。
+>
+> ```
+> 【悪い例】 C:\dev\hp-builder> claude        ← 作業フォルダ直下で起動
+> 【正しい例】 C:\dev\hp-builder\client-XXX> claude  ← プロジェクト内で起動
+> ```
+
+#### 起動前の確認（元のPowerShellウィンドウで実行）
+
+```powershell
+# 現在地を確認
+pwd
+# → C:\dev\hp-builder\client-XXX と表示されればOK
+
+# src/app が存在するか確認
+Test-Path src\app
+# → True と表示されればOK
+```
+
+両方OKなら、そのままClaude Codeを起動してください。
 
 ```powershell
 claude
@@ -318,6 +340,15 @@ Heroセクションを実装してください。
 - キャッチコピーをフェードインで表示
 - CTAボタンをbrand-secondaryの塗りで実装
 - Framer Motionで左からフェードイン
+```
+
+#### 実装後の確認
+
+```powershell
+# コンポーネントが作られているか確認
+Get-ChildItem src\components -Recurse
+# → ファイルが表示されればOK
+# → 何も表示されない場合は間違ったフォルダで作業しています
 ```
 
 ---

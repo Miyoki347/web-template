@@ -1,0 +1,30 @@
+/* テンプレートデフォルト（corporate）。3-3 の手順で業種テーマに上書きされる */
+:root {
+  --brand-primary:    #1A202C;
+  --brand-secondary:  #3182CE;
+  --brand-accent:     #63B3ED;
+  --brand-bg:         #FFFFFF;
+  --brand-surface:    #F7FAFC;
+  --brand-border:     rgba(26, 32, 44, 0.12);
+  --brand-text:       #1A202C;
+  --brand-text-muted: #718096;
+  --brand-glow:       rgba(49, 130, 206, 0.2);
+
+  --brand-gradient:     linear-gradient(135deg, #1A202C 0%, #2D3748 50%, #1A365D 100%);
+  --brand-gradient-btn: linear-gradient(135deg, #3182CE, #2B6CB0);
+
+  --font-heading: 'Noto Sans JP', sans-serif;
+  --font-body:    'Noto Sans JP', sans-serif;
+
+  --radius-brand: 4px;
+  --radius-card:  8px;
+
+  --anim-speed: 0.4s;
+  --anim-ease:  cubic-bezier(0.4, 0, 0.2, 1);
+
+  --shadow-card:  0 4px 24px rgba(26, 32, 44, 0.1);
+  --shadow-hero:  0 20px 60px rgba(26, 32, 44, 0.2);
+  --glass-bg:     rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(49, 130, 206, 0.15);
+  --glass-blur:   16px;
+}

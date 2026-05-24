@@ -1,24 +1,96 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* デフォルトテーマ（corporate）。案件ごとに layout.tsx で差し替える */
+/* ベース変数（active.css で上書きされる） */
 :root {
-  --brand-primary:   #1A202C;
-  --brand-secondary: #3182CE;
-  --brand-accent:    #EDF2F7;
-  --brand-bg:        #FFFFFF;
-  --font-heading:    'Noto Sans JP', sans-serif;
-  --font-body:       'Noto Sans JP', sans-serif;
-  --anim-speed:      0.4s;
-  --radius-brand:    4px;
+  --brand-primary:    #1A202C;
+  --brand-secondary:  #3182CE;
+  --brand-accent:     #63B3ED;
+  --brand-bg:         #FFFFFF;
+  --brand-surface:    #F7FAFC;
+  --brand-border:     rgba(26, 32, 44, 0.12);
+  --brand-text:       #1A202C;
+  --brand-text-muted: #718096;
+  --brand-glow:       rgba(49, 130, 206, 0.2);
+
+  --brand-gradient:     linear-gradient(135deg, #1A202C 0%, #2D3748 50%, #1A365D 100%);
+  --brand-gradient-btn: linear-gradient(135deg, #3182CE, #2B6CB0);
+
+  --font-heading: 'Noto Sans JP', sans-serif;
+  --font-body:    'Noto Sans JP', sans-serif;
+
+  --radius-brand: 4px;
+  --radius-card:  8px;
+
+  --anim-speed: 0.4s;
+  --anim-ease:  cubic-bezier(0.4, 0, 0.2, 1);
+
+  --shadow-card:  0 4px 24px rgba(26, 32, 44, 0.1);
+  --shadow-hero:  0 20px 60px rgba(26, 32, 44, 0.2);
+  --glass-bg:     rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(49, 130, 206, 0.15);
+  --glass-blur:   16px;
 }
 
 body {
   background-color: var(--brand-bg);
+  color: var(--brand-text);
   font-family: var(--font-body);
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+}
+
+/* CursorFollower 有効時にネイティブカーソルを非表示 */
+body.cursor-custom,
+body.cursor-custom * {
+  cursor: none !important;
+}
+
+/* ---- Blob アニメーション ---- */
+@keyframes blob-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(40px, -60px) scale(1.1); }
+  66%       { transform: translate(-30px, 30px) scale(0.9); }
+}
+@keyframes blob-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(-50px, 40px) scale(1.15); }
+  66%       { transform: translate(35px, -40px) scale(0.88); }
+}
+@keyframes blob-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(25px, 50px) scale(0.92); }
+  66%       { transform: translate(-40px, -25px) scale(1.08); }
+}
+
+/* ---- Wave アニメーション ---- */
+@keyframes wave-drift-1 {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(-5%); }
+}
+@keyframes wave-drift-2 {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(5%); }
+}
+@keyframes wave-drift-3 {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(-3%); }
+}
+
+/* ---- Grid pulse ---- */
+@keyframes grid-pulse {
+  0%, 100% { opacity: 0.04; }
+  50%       { opacity: 0.08; }
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

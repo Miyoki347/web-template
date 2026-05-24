@@ -14,13 +14,43 @@ src/styles/themes/        ← 業種別テーマCSS
 
 ## 実装ルール（必ず守ること）
 
-- スタイルはTailwindクラスのみ（style属性は使わない）
-- アニメーションはFramer Motionのみ
-- 画像はnext/imageコンポーネントを必ず使う
+- スタイルはTailwindクラスを優先（やむを得ない場合のみ style 属性）
+- スクロールトリガーアニメーションは Framer Motion の useInView で実装
+- 画像は next/image コンポーネントを必ず使う
 - any型禁止・すべての型を明示的に定義
 - コンポーネント名はPascalCase、ファイル名はkebab-case
-- useInViewでスクロールトリガーアニメーションを実装
 - レスポンシブはsm(640px)/md(768px)/lg(1024px)で対応
+- `data-cursor-hover` 属性を付けた要素はカーソルリングが拡大する
+
+## 動的演出コンポーネント
+
+### CursorFollower（layout.tsx に自動マウント済み）
+
+全ページ共通のカスタムカーソル。マウス追従リング + スポットライトグロー。
+- `--brand-primary` でリング色、`--brand-glow` で光彩色が自動決定
+- タッチデバイス・prefers-reduced-motion では自動無効
+- インタラクティブ要素（a / button）ホバー時にリングが拡大
+
+### HeroBackground（Hero セクションに配置）
+
+```tsx
+import HeroBackground, { type HeroVariant } from '@/components/sections/HeroBackground'
+
+// Hero セクションの一番外側を relative にして内部に配置
+<section className="relative overflow-hidden min-h-screen">
+  <HeroBackground variant="blob" />  {/* または particle / wave / grid */}
+  {/* コンテンツ */}
+</section>
+```
+
+variant 選択基準:
+
+| variant | 向いている業種 |
+|---------|-------------|
+| blob | nursery / medical / school / salon-nail（明るい・柔らかい系） |
+| particle | food-bar / food-fine / startup / fitness（ダーク・エネルギー系） |
+| wave | food-cafe / medical-wellness / renovation（ナチュラル・有機的系） |
+| grid | corporate / professional / realestate / construction（格式・幾何学系） |
 
 ## テーマの使い方
 
