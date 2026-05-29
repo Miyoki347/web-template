@@ -97,10 +97,13 @@ function ParticleBackground() {
   const mouseRef = useRef({ x: -999, y: -999 })
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const canvasEl = canvasRef.current
+    if (!canvasEl) return
+    const ctxEl = canvasEl.getContext('2d')
+    if (!ctxEl) return
+    // null チェック後に再代入することで TypeScript がクロージャ内でも非null型として推論できる
+    const canvas = canvasEl
+    const ctx = ctxEl
 
     // CSS変数から hex を RGB 分解
     function hexToRgb(hex: string): [number, number, number] {
