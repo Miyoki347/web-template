@@ -1,40 +1,47 @@
 "use client";
 
 // ============================================================
-// ここを編集してください
-// YOUR_TAGLINE        : タイプライター風に表示されるメインコピー
-// YOUR_HERO_SUBTITLE  : タグラインの下に表示されるサブテキスト
-// YOUR_HERO_LABEL     : セクション上部の小さなラベル（例: "AI × Design × Code"）
-// YOUR_PRIMARY_CTA    : 左のメインボタンのテキスト（例: "制作を依頼する"）
-// YOUR_SECONDARY_CTA  : 右のサブボタンのテキスト（例: "実績を見る"）
+// ここを編集してください（静的な表示テキスト）
+// HERO_LABEL    : セクション上部の小さなラベル（例: "AI × Design × Code"）
+// SECONDARY_CTA : 右のサブボタンのテキスト（例: "実績を見る"）
+//
+// heading / subheading / ctaText / ctaUrl は
+// microCMS /hero エンドポイントから page.tsx 経由で渡されます
 // ============================================================
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
 
-const YOUR_TAGLINE = "YOUR_TAGLINE";
-const YOUR_HERO_SUBTITLE = "YOUR_HERO_SUBTITLE";
-const YOUR_HERO_LABEL = "YOUR_HERO_LABEL";
-const YOUR_PRIMARY_CTA = "YOUR_PRIMARY_CTA";
-const YOUR_SECONDARY_CTA = "YOUR_SECONDARY_CTA";
+const HERO_LABEL    = "YOUR_HERO_LABEL";
+const SECONDARY_CTA = "YOUR_SECONDARY_CTA";
 
-export default function Hero() {
-  const [displayed, setDisplayed] = useState("");
+// ── Props 型（page.tsx から CMS データを受け取る） ────────────
+export type HeroProps = {
+  heading:    string
+  subheading: string
+  ctaText:    string
+  ctaUrl:     string
+}
+
+export default function Hero({ heading, subheading, ctaText, ctaUrl }: HeroProps) {
+  const [displayed, setDisplayed]     = useState("");
   const [cursorVisible, setCursorVisible] = useState(true);
   const containerRef = useRef<HTMLElement>(null);
   const mouseX = useMotionValue(-9999);
   const mouseY = useMotionValue(-9999);
   const glowBg = useMotionTemplate`radial-gradient(700px circle at ${mouseX}px ${mouseY}px, rgba(123,97,255,0.18) 0%, transparent 70%)`;
 
+  // タイプライター：heading が変わったらリセットして再実行
   useEffect(() => {
+    setDisplayed("");
     let i = 0;
     const timer = setInterval(() => {
-      setDisplayed(YOUR_TAGLINE.slice(0, i + 1));
+      setDisplayed(heading.slice(0, i + 1));
       i++;
-      if (i >= YOUR_TAGLINE.length) clearInterval(timer);
+      if (i >= heading.length) clearInterval(timer);
     }, 55);
     return () => clearInterval(timer);
-  }, []);
+  }, [heading]);
 
   useEffect(() => {
     const timer = setInterval(() => setCursorVisible((v) => !v), 530);
@@ -75,7 +82,7 @@ export default function Hero() {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="font-heading text-brand-accent text-xs tracking-[0.3em] uppercase mb-8"
         >
-          {YOUR_HERO_LABEL}
+          {HERO_LABEL}
         </motion.p>
 
         <h1 className="font-heading text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight min-h-[3em] sm:min-h-[2em]">
@@ -93,7 +100,7 @@ export default function Hero() {
           transition={{ delay: 2.8, duration: 0.8 }}
           className="mt-6 text-white/50 text-lg sm:text-xl font-body leading-relaxed"
         >
-          {YOUR_HERO_SUBTITLE}
+          {subheading}
         </motion.p>
 
         <motion.div
@@ -103,16 +110,16 @@ export default function Hero() {
           className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
         >
           <a
-            href="#contact"
+            href={ctaUrl}
             className="inline-flex items-center justify-center h-12 px-8 rounded-full bg-brand-sub text-white font-heading font-medium text-sm hover:bg-[#9B84FF] transition-colors shadow-lg shadow-brand-sub/30"
           >
-            {YOUR_PRIMARY_CTA}
+            {ctaText}
           </a>
           <a
             href="#projects"
             className="inline-flex items-center justify-center h-12 px-8 rounded-full border border-white/20 text-white font-heading font-medium text-sm hover:border-brand-accent/60 hover:text-brand-accent transition-colors"
           >
-            {YOUR_SECONDARY_CTA}
+            {SECONDARY_CTA}
           </a>
         </motion.div>
       </div>

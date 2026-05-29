@@ -2,7 +2,8 @@
 
 // ============================================================
 // ここを編集してください
-// SNS・連絡手段の設定は src/config/contact.ts で行う
+// SNS・連絡手段の表示設定 → src/config/contact.ts
+// 実際の URL / メールアドレス → microCMS /settings エンドポイント
 //
 // YOUR_CONTACT_HEADING : コンタクトセクションの見出し
 // YOUR_CONTACT_BODY    : 見出し下の説明文
@@ -18,6 +19,14 @@ const YOUR_CONTACT_HEADING = "YOUR_CONTACT_HEADING";
 const YOUR_CONTACT_BODY    = "YOUR_CONTACT_BODY — お問い合わせの内容や対応できること、気軽さなどを伝える文章。";
 const YOUR_NAME            = "YOUR_NAME";
 const YOUR_CATCHCOPY       = "YOUR_CATCHCOPY";
+
+// ── CMS から受け取るデータ型 ──────────────────────────────────
+/** page.tsx が /settings から取得して渡す連絡先情報 */
+export type ContactCmsData = {
+  email?:        string   // 公開メールアドレス（フォームの送信先とは別）
+  twitterUrl?:   string   // Twitter プロフィール URL
+  instagramUrl?: string   // Instagram プロフィール URL
+}
 
 // ── フォーム型定義 ────────────────────────────────────────────
 type FormState   = "idle" | "submitting" | "success" | "error";
@@ -35,7 +44,8 @@ type ChannelDef = {
   bgStyle?:     React.CSSProperties
   isEnabled:    (c: ContactConfig) => boolean
   getLabel:     (c: ContactConfig) => string | undefined
-  getHref:      (c: ContactConfig) => string
+  // CMS の値を第2引数で受け取り、設定がある場合は優先する
+  getHref:      (c: ContactConfig, cms: ContactCmsData | null) => string
 }
 
 const CHANNEL_DEFS: ChannelDef[] = [
@@ -46,7 +56,8 @@ const CHANNEL_DEFS: ChannelDef[] = [
     className:    "border border-white/20 text-white hover:bg-white/5 hover:border-white/40",
     isEnabled:    (c) => c.twitter.enabled,
     getLabel:     (c) => c.twitter.label,
-    getHref:      (c) => c.twitter.url,
+    // CMS の twitterUrl があれば優先、なければ config の url を使う
+    getHref:      (c, cms) => cms?.twitterUrl ?? c.twitter.url,
   },
   {
     key:          "instagram",
@@ -56,7 +67,8 @@ const CHANNEL_DEFS: ChannelDef[] = [
     bgStyle:      { background: "linear-gradient(135deg, #F58529 0%, #DD2A7B 50%, #8134AF 100%)" },
     isEnabled:    (c) => c.instagram.enabled,
     getLabel:     (c) => c.instagram.label,
-    getHref:      (c) => c.instagram.url,
+    // CMS の instagramUrl があれば優先、なければ config の url を使う
+    getHref:      (c, cms) => cms?.instagramUrl ?? c.instagram.url,
   },
   {
     key:          "line",
@@ -135,8 +147,13 @@ const inputBase =
   "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white text-sm font-body placeholder:text-white/25 focus:outline-none focus:border-brand-sub/60 transition-colors duration-200";
 const inputErrorClass = "border-red-400/60 focus:border-red-400/60";
 
+// ── Props 型（page.tsx から CMS データを受け取る） ────────────
+type ContactProps = {
+  cmsData: ContactCmsData | null
+}
+
 // ── コンポーネント ────────────────────────────────────────────
-export default function Contact() {
+export default function Contact({ cmsData }: ContactProps) {
   const ref      = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const animate  = isInView ? "visible" : "hidden";
@@ -145,9 +162,9 @@ export default function Contact() {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [formState, setFormState]     = useState<FormState>("idle");
 
-  const showForm      = contactConfig.email.enabled;
+  const showForm        = contactConfig.email.enabled;
   const enabledChannels = CHANNEL_DEFS.filter((def) => def.isEnabled(contactConfig));
-  const showDivider   = showForm && enabledChannels.length > 0;
+  const showDivider     = showForm && enabledChannels.length > 0;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -303,7 +320,9 @@ export default function Contact() {
                     disabled={formState === "submitting"}
                     className="w-full h-14 rounded-full bg-brand-sub text-white font-heading font-medium text-sm hover:bg-[#9B84FF] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-xl shadow-brand-sub/30"
                   >
-                    {formState === "submitting" ? "送信中..." : (contactConfig.email.label ?? "メールで問い合わせる")}
+                    {formState === "submitting"
+                      ? "送信中..."
+                      : (contactConfig.email.label ?? "メールで問い合わせる")}
                   </button>
                 </motion.form>
               )}
@@ -338,7 +357,7 @@ export default function Contact() {
             {enabledChannels.map((def) => (
               <a
                 key={def.key}
-                href={def.getHref(contactConfig)}
+                href={def.getHref(contactConfig, cmsData)}
                 target={def.key === "phone" ? undefined : "_blank"}
                 rel={def.key === "phone" ? undefined : "noopener noreferrer"}
                 style={def.bgStyle}
@@ -349,6 +368,25 @@ export default function Contact() {
               </a>
             ))}
           </motion.div>
+        )}
+
+        {/* ── CMS から取得した公開メールアドレス ── */}
+        {cmsData?.email && (
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            animate={animate}
+            custom={0.45}
+            className="mt-5 text-center text-white/35 text-xs font-body"
+          >
+            メール直送:{" "}
+            <a
+              href={`mailto:${cmsData.email}`}
+              className="text-white/55 hover:text-white/80 transition-colors underline underline-offset-2"
+            >
+              {cmsData.email}
+            </a>
+          </motion.p>
         )}
 
         {/* ── フッター ── */}
